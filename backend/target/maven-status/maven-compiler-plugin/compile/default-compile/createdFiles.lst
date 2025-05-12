@@ -1,0 +1,6 @@
+com\example\webapp\controller\AuthController.class
+com\example\webapp\model\Role.class
+com\example\webapp\model\User.class
+com\example\webapp\repository\UserRepository.class
+com\example\webapp\controller\AuthController$LoginRequest.class
+com\example\webapp\controller\AuthController$RegisterRequest.class

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react-jsx"
+    },
+    "include": [
+        "src",
+        "tailwind.config.js",
+        "postcss.config.js",
+        "vite.config.js"
+    ]
+}
