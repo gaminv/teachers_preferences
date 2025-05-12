@@ -36,4 +36,9 @@ npm run dev
 ```
 Адрес: http://localhost:5173
 
+## Авторизация
+Логин: admin 
+Пароль: admin1
+
+
 
