@@ -55,7 +55,7 @@ export default function TeacherDashboard() {
             <div className="max-w-3xl mx-auto">
                 <header className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-800">
-                        Привет, {user.fullName}!
+                        Здравствуйте, {user.fullName}!
                     </h1>
                     <button onClick={handleLogout} className="text-red-600 hover:underline">
                         Выйти
