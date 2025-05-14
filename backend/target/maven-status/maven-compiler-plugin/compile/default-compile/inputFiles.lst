@@ -1,18 +1,18 @@
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\config\SecurityConfig.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\model\Preference.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\config\DataInitializer.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\controller\TeacherController.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\controller\AuthController.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\service\AuthService.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\dto\PreferenceDto.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\security\JwtAuthFilter.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\controller\AdminController.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\repository\PreferenceRepository.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\repository\UserRepository.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\model\Teacher.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\service\TeacherService.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\PreferencesBackendApplication.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\model\User.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\service\AdminService.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\model\Role.java
-D:\проекты\Collection_preferences copy\backend\src\main\java\com\example\webapp\repository\TeacherRepository.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\PreferencesBackendApplication.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\model\Role.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\model\User.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\repository\PreferenceRepository.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\security\JwtAuthFilter.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\service\AuthService.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\model\Teacher.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\controller\AuthController.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\model\Preference.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\controller\AdminController.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\controller\TeacherController.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\service\AdminService.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\service\TeacherService.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\repository\UserRepository.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\config\DataInitializer.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\dto\PreferenceDto.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\config\SecurityConfig.java
+D:\проекты\teachers_preferences\backend\src\main\java\com\example\webapp\repository\TeacherRepository.java

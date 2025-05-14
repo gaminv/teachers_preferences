@@ -1,0 +1,8 @@
+com\example\webapp\service\AdminServiceTest.class
+com\example\webapp\controller\AuthControllerTest.class
+com\example\webapp\service\TeacherServiceTest.class
+com\example\webapp\service\AuthServiceTest.class
+com\example\webapp\integration\TeacherFlowIntegrationTest.class
+com\example\webapp\controller\AdminControllerTest.class
+com\example\webapp\controller\AuthControllerTest$1.class
+com\example\webapp\controller\TeacherControllerTest.class
