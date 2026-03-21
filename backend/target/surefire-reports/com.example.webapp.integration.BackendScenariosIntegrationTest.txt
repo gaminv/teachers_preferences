@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.webapp.integration.BackendScenariosIntegrationTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.698 s - in com.example.webapp.integration.BackendScenariosIntegrationTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.4 s - in com.example.webapp.integration.BackendScenariosIntegrationTest
