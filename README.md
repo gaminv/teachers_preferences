@@ -87,7 +87,8 @@ npm run test:coverage
 - Backend (JaCoCo): `backend/target/site/jacoco/index.html`
 - Frontend (Vitest): `frontend/coverage/index.html`
 
-![image](https://github.com/user-attachments/assets/1a93974e-87be-4b36-97e7-34555e2ce11f)
+<img width="581" height="287" alt="image" src="https://github.com/user-attachments/assets/f731f560-092a-42be-8ae2-d3f2d8b462e9" />
+
 
 ---
 
