@@ -20,9 +20,9 @@
   - Line: `90.50%`
   - Branch: `64.37%`
 - Frontend (Vitest, `npm run test:coverage`):
-  - Statements/Lines: `35.8%`
-  - Branches: `81.72%`
-  - Functions: `78.57%`
+  - Statements/Lines: `92.57%`
+  - Branches: `79.02%`
+  - Functions: `57.69%`
 
 > Note: coverage above is calculated only for `backend` + `frontend`; `schedule-etl` is excluded.
 
