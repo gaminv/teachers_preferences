@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Preference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Collection Preferences Backend</a> &gt; <a href="index.source.html" class="el_package">com.example.webapp.model</a> &gt; <span class="el_source">Preference.java</span></div><h1>Preference.java</h1><pre class="source lang-java linenums">package com.example.webapp.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = &quot;preferences&quot;)
+public class Preference {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;teacher_id&quot;, nullable = false)
+    private Teacher teacher;
+
+    @Column(nullable = false)
+    private String type;
+
+    private String subject;
+    private String groups;
+
+    private String days;
+    @Column(name = &quot;days_priority&quot;)
+    private Integer daysPriority;
+
+    private String times;
+    @Column(name = &quot;times_priority&quot;)
+    private Integer timesPriority;
+
+    // Сессионные поля
+    private String preferredDates;
+    private String avoidDates;
+    private String newYearPref;
+
+    // Общие поля + приоритеты
+    private String loadType;
+    @Column(name = &quot;load_type_priority&quot;)
+    private Integer loadTypePriority;
+
+    private String buildingRoom;
+    @Column(name = &quot;building_room_priority&quot;)
+    private Integer buildingRoomPriority;
+
+    private String boardType;
+    @Column(name = &quot;board_type_priority&quot;)
+    private Integer boardTypePriority;
+
+    // CSV-строка для списка компьютеров + приоритет
+    @Column(name = &quot;computers&quot;, length = 255)
+    private String computers;
+    @Column(name = &quot;computers_priority&quot;)
+    private Integer computersPriority;
+
+    private String format;
+    @Column(name = &quot;format_priority&quot;)
+    private Integer formatPriority;
+
+    private String comments;
+    @Column(name = &quot;comments_priority&quot;)
+    private Integer commentsPriority;
+
+<span class="fc" id="L70">    public Preference() {}</span>
+
+    // === Getters &amp; Setters ===
+
+<span class="fc" id="L74">    public Long getId() { return id; }</span>
+<span class="fc" id="L75">    public void setId(Long id) { this.id = id; }</span>
+
+<span class="fc" id="L77">    public Teacher getTeacher() { return teacher; }</span>
+<span class="fc" id="L78">    public void setTeacher(Teacher teacher) { this.teacher = teacher; }</span>
+
+<span class="fc" id="L80">    public String getType() { return type; }</span>
+<span class="fc" id="L81">    public void setType(String type) { this.type = type; }</span>
+
+<span class="fc" id="L83">    public String getSubject() { return subject; }</span>
+<span class="fc" id="L84">    public void setSubject(String subject) { this.subject = subject; }</span>
+
+<span class="fc" id="L86">    public String getGroups() { return groups; }</span>
+<span class="fc" id="L87">    public void setGroups(String groups) { this.groups = groups; }</span>
+
+<span class="fc" id="L89">    public String getDays() { return days; }</span>
+<span class="fc" id="L90">    public void setDays(String days) { this.days = days; }</span>
+
+<span class="fc" id="L92">    public Integer getDaysPriority() { return daysPriority; }</span>
+<span class="fc" id="L93">    public void setDaysPriority(Integer daysPriority) { this.daysPriority = daysPriority; }</span>
+
+<span class="fc" id="L95">    public String getTimes() { return times; }</span>
+<span class="fc" id="L96">    public void setTimes(String times) { this.times = times; }</span>
+
+<span class="fc" id="L98">    public Integer getTimesPriority() { return timesPriority; }</span>
+<span class="fc" id="L99">    public void setTimesPriority(Integer timesPriority) { this.timesPriority = timesPriority; }</span>
+
+<span class="fc" id="L101">    public String getPreferredDates() { return preferredDates; }</span>
+<span class="fc" id="L102">    public void setPreferredDates(String preferredDates) { this.preferredDates = preferredDates; }</span>
+
+<span class="fc" id="L104">    public String getAvoidDates() { return avoidDates; }</span>
+<span class="fc" id="L105">    public void setAvoidDates(String avoidDates) { this.avoidDates = avoidDates; }</span>
+
+<span class="fc" id="L107">    public String getNewYearPref() { return newYearPref; }</span>
+<span class="fc" id="L108">    public void setNewYearPref(String newYearPref) { this.newYearPref = newYearPref; }</span>
+
+<span class="fc" id="L110">    public String getLoadType() { return loadType; }</span>
+<span class="fc" id="L111">    public void setLoadType(String loadType) { this.loadType = loadType; }</span>
+
+<span class="fc" id="L113">    public Integer getLoadTypePriority() { return loadTypePriority; }</span>
+<span class="fc" id="L114">    public void setLoadTypePriority(Integer loadTypePriority) { this.loadTypePriority = loadTypePriority; }</span>
+
+<span class="fc" id="L116">    public String getBuildingRoom() { return buildingRoom; }</span>
+<span class="fc" id="L117">    public void setBuildingRoom(String buildingRoom) { this.buildingRoom = buildingRoom; }</span>
+
+<span class="fc" id="L119">    public Integer getBuildingRoomPriority() { return buildingRoomPriority; }</span>
+<span class="fc" id="L120">    public void setBuildingRoomPriority(Integer buildingRoomPriority) { this.buildingRoomPriority = buildingRoomPriority; }</span>
+
+<span class="fc" id="L122">    public String getBoardType() { return boardType; }</span>
+<span class="fc" id="L123">    public void setBoardType(String boardType) { this.boardType = boardType; }</span>
+
+<span class="fc" id="L125">    public Integer getBoardTypePriority() { return boardTypePriority; }</span>
+<span class="fc" id="L126">    public void setBoardTypePriority(Integer boardTypePriority) { this.boardTypePriority = boardTypePriority; }</span>
+
+<span class="fc" id="L128">    public String getComputers() { return computers; }</span>
+<span class="fc" id="L129">    public void setComputers(String computers) { this.computers = computers; }</span>
+
+<span class="fc" id="L131">    public Integer getComputersPriority() { return computersPriority; }</span>
+<span class="fc" id="L132">    public void setComputersPriority(Integer computersPriority) { this.computersPriority = computersPriority; }</span>
+
+<span class="fc" id="L134">    public String getFormat() { return format; }</span>
+<span class="fc" id="L135">    public void setFormat(String format) { this.format = format; }</span>
+
+<span class="fc" id="L137">    public Integer getFormatPriority() { return formatPriority; }</span>
+<span class="fc" id="L138">    public void setFormatPriority(Integer formatPriority) { this.formatPriority = formatPriority; }</span>
+
+<span class="fc" id="L140">    public String getComments() { return comments; }</span>
+<span class="fc" id="L141">    public void setComments(String comments) { this.comments = comments; }</span>
+
+<span class="fc" id="L143">    public Integer getCommentsPriority() { return commentsPriority; }</span>
+<span class="fc" id="L144">    public void setCommentsPriority(Integer commentsPriority) { this.commentsPriority = commentsPriority; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

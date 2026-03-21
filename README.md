@@ -55,6 +55,38 @@ docker compose up --build
 
 Все **unit** и **integration** тесты автоматически запускаются на этапе `mvn verify` при сборке backend-контейнера.
 
+### Запуск тестов локально (полный контур по ТЗ)
+
+Backend:
+
+```bash
+cd backend
+mvn clean verify
+mvn test "-Dtest=*UnitTest,*ServiceTest,*ControllerTest,*AuthServiceTest,*AdminServiceTest,*TeacherServiceTest"
+mvn test "-Dtest=*IntegrationTest"
+mvn test "-Dtest=*SystemTest,*SystemE2ETest"
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm ci
+npm run test:unit
+npm run test:integration
+npm run test:system
+npm run test:coverage
+```
+
+Документы по тестированию:
+- `docs/TEST_PLAN_INTEGRATION.md`
+- `docs/TEST_PLAN_SYSTEM_E2E.md`
+- `docs/TESTING_REPORT.md`
+
+Покрытие:
+- Backend (JaCoCo): `backend/target/site/jacoco/index.html`
+- Frontend (Vitest): `frontend/coverage/index.html`
+
 ![image](https://github.com/user-attachments/assets/1a93974e-87be-4b36-97e7-34555e2ce11f)
 
 ---
