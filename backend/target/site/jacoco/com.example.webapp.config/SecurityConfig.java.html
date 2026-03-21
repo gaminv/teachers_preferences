@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Collection Preferences Backend</a> &gt; <a href="index.source.html" class="el_package">com.example.webapp.config</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package com.example.webapp.config;
+
+import com.example.webapp.repository.UserRepository;
+import com.example.webapp.security.JwtAuthFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.http.SessionCreationPolicy;
+
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import org.springframework.http.HttpMethod;
+
+import java.util.List;
+
+@Configuration
+<span class="fc" id="L35">public class SecurityConfig {</span>
+
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Password encoder
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+<span class="fc" id="L46">        return new BCryptPasswordEncoder();</span>
+    }
+
+    // UserDetailsService через UserRepository
+    @Bean
+    public UserDetailsService userDetailsService() {
+<span class="fc" id="L52">        return username -&gt; userRepository.findBylogin(username)</span>
+<span class="fc" id="L53">            .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found: &quot; + username));</span>
+    }
+
+    // DaoAuthenticationProvider
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+<span class="fc" id="L59">        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();</span>
+<span class="fc" id="L60">        authProvider.setUserDetailsService(userDetailsService());</span>
+<span class="fc" id="L61">        authProvider.setPasswordEncoder(passwordEncoder());</span>
+<span class="fc" id="L62">        return authProvider;</span>
+    }
+
+    // AuthenticationManager
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+<span class="fc" id="L68">        return config.getAuthenticationManager();</span>
+    }
+
+    // Основная конфигурация безопасности
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+<span class="fc" id="L74">        http</span>
+            // включаем CORS
+<span class="fc" id="L76">            .cors()</span>
+<span class="fc" id="L77">        .and()</span>
+            // отключаем CSRF для stateless REST
+<span class="fc" id="L79">            .csrf().disable()</span>
+            // права доступа
+<span class="fc" id="L81">            .authorizeHttpRequests()</span>
+<span class="fc" id="L82">                .requestMatchers(&quot;/error&quot;).permitAll() </span>
+                // разрешаем всем preflight и OPTIONS-запросы
+<span class="fc" id="L84">                .requestMatchers(HttpMethod.OPTIONS, &quot;/**&quot;).permitAll()</span>
+                // регистрация/логин
+<span class="fc" id="L86">                .requestMatchers(&quot;/api/auth/**&quot;).permitAll()</span>
+                // только учитель
+<span class="fc" id="L88">                .requestMatchers(&quot;/api/teacher/**&quot;).hasRole(&quot;TEACHER&quot;)</span>
+                // только админ
+<span class="fc" id="L90">                .requestMatchers(&quot;/api/admin/**&quot;).hasRole(&quot;ADMIN&quot;)</span>
+                // всё остальное требует авторизации
+<span class="fc" id="L92">                .anyRequest().authenticated()</span>
+<span class="fc" id="L93">        .and()</span>
+            // stateless сессия (JWT)
+<span class="fc" id="L95">            .sessionManagement()</span>
+<span class="fc" id="L96">                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)</span>
+<span class="fc" id="L97">        .and()</span>
+            // наш провайдер
+<span class="fc" id="L99">            .authenticationProvider(authenticationProvider())</span>
+            // JWT-фильтр перед UsernamePasswordAuthenticationFilter
+<span class="fc" id="L101">            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);</span>
+
+<span class="fc" id="L103">        return http.build();</span>
+    }
+
+    // Глобальная CORS-настройка для всего API
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+<span class="fc" id="L109">        CorsConfiguration cfg = new CorsConfiguration();</span>
+<span class="fc" id="L110">        cfg.setAllowedOrigins(List.of(&quot;http://localhost&quot;));</span>
+<span class="fc" id="L111">        cfg.setAllowedMethods(List.of(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
+<span class="fc" id="L112">        cfg.setAllowedHeaders(List.of(&quot;*&quot;));</span>
+<span class="fc" id="L113">        cfg.setAllowCredentials(true);</span>
+
+<span class="fc" id="L115">        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
+        // применяется ко всем эндпоинтам
+<span class="fc" id="L117">        source.registerCorsConfiguration(&quot;/**&quot;, cfg);</span>
+<span class="fc" id="L118">        return source;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

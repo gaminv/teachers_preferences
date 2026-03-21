@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Collection Preferences Backend</a> &gt; <a href="index.source.html" class="el_package">com.example.webapp.service</a> &gt; <span class="el_source">AdminService.java</span></div><h1>AdminService.java</h1><pre class="source lang-java linenums">package com.example.webapp.service;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Service;
+
+import com.example.webapp.dto.PreferenceDto;
+import com.example.webapp.model.Preference;
+import com.example.webapp.repository.PreferenceRepository;
+
+@Service
+<span class="fc" id="L24">public class AdminService {</span>
+
+    @Autowired
+    private PreferenceRepository prefRepo;
+
+    /** Возвращает все DTO предпочтений */
+    public List&lt;PreferenceDto&gt; getAllPreferences() {
+<span class="fc" id="L31">        return prefRepo.findAll().stream()</span>
+<span class="fc" id="L32">                       .map(this::toDto)</span>
+<span class="fc" id="L33">                       .collect(Collectors.toList());</span>
+    }
+
+    /** Экспорт в Excel с русскими заголовками и корректным выводом дней */
+    public ByteArrayResource exportPreferencesToExcel() throws IOException {
+<span class="fc" id="L38">        List&lt;PreferenceDto&gt; all = getAllPreferences().stream()</span>
+<span class="fc" id="L39">            .sorted(Comparator.comparing(d -&gt; d.teacherName))</span>
+<span class="fc" id="L40">            .collect(Collectors.toList());</span>
+
+<span class="fc" id="L42">        Workbook wb = new XSSFWorkbook();</span>
+<span class="fc" id="L43">        Sheet sheet = wb.createSheet(&quot;Пожелания&quot;);</span>
+
+        // Заголовки таблицы
+<span class="fc" id="L46">        String[] headers = {</span>
+            &quot;Преподаватель&quot;, &quot;Логин&quot;,
+            &quot;Тип&quot;, &quot;Предмет&quot;, &quot;Группы&quot;,
+            &quot;Нежелательные дни&quot;, &quot;Время&quot;,
+            &quot;Предпочтительные даты&quot;, &quot;Исключить даты&quot;, &quot;Новогодние пожелания&quot;,
+            &quot;Нагрузка&quot;, &quot;Корпус/аудитория&quot;, &quot;Доска&quot;,
+            &quot;Компьютеры&quot;, &quot;Формат&quot;, &quot;Комментарии&quot;
+        };
+<span class="fc" id="L54">        Row headerRow = sheet.createRow(0);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; headers.length; i++) {</span>
+<span class="fc" id="L56">            headerRow.createCell(i).setCellValue(headers[i]);</span>
+        }
+
+<span class="fc" id="L59">        String prevTeacher = null;</span>
+<span class="fc" id="L60">        int rowIdx = 1;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (PreferenceDto d : all) {</span>
+<span class="fc" id="L62">            Row row = sheet.createRow(rowIdx++);</span>
+<span class="fc" id="L63">            int c = 0;</span>
+
+            // 1) ФИО и логин — только при смене преподавателя
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (!d.teacherName.equals(prevTeacher)) {</span>
+<span class="fc" id="L67">                row.createCell(c++).setCellValue(d.teacherName);</span>
+<span class="fc" id="L68">                row.createCell(c++).setCellValue(d.teacherLogin);</span>
+<span class="fc" id="L69">                prevTeacher = d.teacherName;</span>
+            } else {
+<span class="nc" id="L71">                c += 2;</span>
+            }
+
+            // 2) Тип (semester/session) → Русский
+<span class="fc" id="L75">            row.createCell(c++).setCellValue(translateType(d.type));</span>
+
+            // 3) Предмет и группы
+<span class="fc" id="L78">            row.createCell(c++).setCellValue(safeString(d.subject));</span>
+<span class="fc" id="L79">            row.createCell(c++).setCellValue(safeString(d.groups));</span>
+
+            // 4) Нежелательные дни (List&lt;String&gt;) + приоритет
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            List&lt;String&gt; daysFiltered = d.days == null</span>
+<span class="nc" id="L83">                ?  Collections.emptyList()</span>
+<span class="fc" id="L84">                : d.days.stream()</span>
+<span class="fc" id="L85">                    .map(String::trim)     </span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                    .filter(s -&gt; s.length() == 2)   // убираем пустые строки</span>
+<span class="fc" id="L87">                    .distinct()</span>
+<span class="fc" id="L88">                    .collect(Collectors.toList());</span>
+
+<span class="fc" id="L90">            String daysCell = String.join(&quot;, &quot;, daysFiltered)</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                 + (d.daysPriority != null </span>
+<span class="fc" id="L92">                 ? &quot; (&quot; + d.daysPriority + &quot;)&quot; </span>
+<span class="pc" id="L93">                 : &quot;&quot;);</span>
+<span class="fc" id="L94">            row.createCell(c++).setCellValue(daysCell);</span>
+
+            // 5) Время + приоритет
+<span class="fc" id="L97">            String timesCell = safeString(d.times)</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">                + (d.timesPriority != null ? &quot; (&quot; + d.timesPriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L99">            row.createCell(c++).setCellValue(timesCell);</span>
+
+            // 6) Сессионные поля (без приоритетов)
+<span class="fc" id="L102">            row.createCell(c++).setCellValue(safeString(d.preferredDates));</span>
+<span class="fc" id="L103">            row.createCell(c++).setCellValue(safeString(d.avoidDates));</span>
+<span class="fc" id="L104">            row.createCell(c++).setCellValue(safeString(d.newYearPref));</span>
+
+            // 7) Нагрузка + приоритет, переведённая
+<span class="fc" id="L107">            String loadCell = translateLoadType(d.loadType)</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">                + (d.loadTypePriority != null ? &quot; (&quot; + d.loadTypePriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L109">            row.createCell(c++).setCellValue(loadCell);</span>
+
+            // 8) Корпус/аудитория + приоритет
+<span class="fc" id="L112">            String bldCell = safeString(d.buildingRoom)</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">                + (d.buildingRoomPriority != null ? &quot; (&quot; + d.buildingRoomPriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L114">            row.createCell(c++).setCellValue(bldCell);</span>
+
+            // 9) Доска + приоритет, переведённая
+<span class="fc" id="L117">            String boardCell = translateBoardType(d.boardType)</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">                + (d.boardTypePriority != null ? &quot; (&quot; + d.boardTypePriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L119">            row.createCell(c++).setCellValue(boardCell);</span>
+
+            // 10) Компьютеры + приоритет
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            String compList = d.computers == null</span>
+<span class="nc" id="L123">                ? &quot;&quot;</span>
+<span class="fc" id="L124">                : String.join(&quot;, &quot;, d.computers);</span>
+<span class="fc" id="L125">            String compCell = compList</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                + (d.computersPriority != null ? &quot; (&quot; + d.computersPriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L127">            row.createCell(c++).setCellValue(compCell);</span>
+
+            // 11) Формат + приоритет, переведённый
+<span class="fc" id="L130">            String fmtCell = translateFormat(d.format)</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                + (d.formatPriority != null ? &quot; (&quot; + d.formatPriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L132">            row.createCell(c++).setCellValue(fmtCell);</span>
+
+            // 12) Комментарии + приоритет
+<span class="fc" id="L135">            String commCell = safeString(d.comments)</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                + (d.commentsPriority != null ? &quot; (&quot; + d.commentsPriority + &quot;)&quot; : &quot;&quot;);</span>
+<span class="fc" id="L137">            row.createCell(c++).setCellValue(commCell);</span>
+<span class="fc" id="L138">        }</span>
+
+        // Автоподгонка ширины столбцов
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (int i = 0; i &lt; headers.length; i++) {</span>
+<span class="fc" id="L142">            sheet.autoSizeColumn(i);</span>
+        }
+
+        // Сериализация и возврат
+<span class="fc" id="L146">        ByteArrayOutputStream out = new ByteArrayOutputStream();</span>
+<span class="fc" id="L147">        wb.write(out);</span>
+<span class="fc" id="L148">        wb.close();</span>
+<span class="fc" id="L149">        return new ByteArrayResource(out.toByteArray());</span>
+    }
+
+    // Вспомогательные методы
+
+    private String safeString(String s) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        return s == null ? &quot;&quot; : s;</span>
+    }
+
+    private String translateType(String type) {
+<span class="pc bpc" id="L159" title="2 of 3 branches missed.">        switch (type) {</span>
+<span class="fc" id="L160">            case &quot;semester&quot;: return &quot;Семестр&quot;;</span>
+<span class="nc" id="L161">            case &quot;session&quot;:  return &quot;Сессия&quot;;</span>
+<span class="nc" id="L162">            default:         return safeString(type);</span>
+        }
+    }
+
+    private String translateLoadType(String lt) {
+<span class="pc bpc" id="L167" title="2 of 3 branches missed.">        switch (lt) {</span>
+<span class="nc" id="L168">            case &quot;compact&quot;: return &quot;Компактно&quot;;</span>
+<span class="nc" id="L169">            case &quot;even&quot;:    return &quot;Равномерно&quot;;</span>
+<span class="fc" id="L170">            default:        return safeString(lt);</span>
+        }
+    }
+
+    private String translateBoardType(String bt) {
+<span class="pc bpc" id="L175" title="3 of 4 branches missed.">        switch (bt) {</span>
+<span class="nc" id="L176">            case &quot;marker&quot;:  return &quot;Маркер&quot;;</span>
+<span class="nc" id="L177">            case &quot;chalk&quot;:   return &quot;Мел&quot;;</span>
+<span class="nc" id="L178">            case &quot;digital&quot;: return &quot;Цифровая&quot;;</span>
+<span class="fc" id="L179">            default:        return safeString(bt);</span>
+        }
+    }
+
+    private String translateFormat(String f) {
+<span class="pc bpc" id="L184" title="2 of 3 branches missed.">        switch (f) {</span>
+<span class="nc" id="L185">            case &quot;in-person&quot;: return &quot;Очно&quot;;</span>
+<span class="nc" id="L186">            case &quot;remote&quot;:    return &quot;Дистанционно&quot;;</span>
+<span class="fc" id="L187">            default:          return safeString(f);</span>
+        }
+    }
+
+    /** Переводим сущность в DTO */
+    private PreferenceDto toDto(Preference p) {
+<span class="fc" id="L193">        PreferenceDto d = new PreferenceDto();</span>
+<span class="fc" id="L194">        d.id                   = p.getId();</span>
+<span class="fc" id="L195">        d.type                 = p.getType();</span>
+<span class="fc" id="L196">        d.subject              = p.getSubject();</span>
+<span class="fc" id="L197">        d.groups               = p.getGroups();</span>
+        // Преобразуем строку days в список строк
+<span class="pc bpc" id="L199" title="1 of 4 branches missed.">        d.days = (p.getDays() == null || p.getDays().isBlank())</span>
+<span class="fc" id="L200">            ? List.of()</span>
+<span class="fc" id="L201">            : Arrays.asList(p.getDays().split(&quot;\\s*,\\s*&quot;));</span>
+<span class="fc" id="L202">        d.daysPriority         = p.getDaysPriority();</span>
+<span class="fc" id="L203">        d.times                = p.getTimes();</span>
+<span class="fc" id="L204">        d.timesPriority        = p.getTimesPriority();</span>
+<span class="fc" id="L205">        d.preferredDates       = p.getPreferredDates();</span>
+<span class="fc" id="L206">        d.avoidDates           = p.getAvoidDates();</span>
+<span class="fc" id="L207">        d.newYearPref          = p.getNewYearPref();</span>
+<span class="fc" id="L208">        d.loadType             = p.getLoadType();</span>
+<span class="fc" id="L209">        d.loadTypePriority     = p.getLoadTypePriority();</span>
+<span class="fc" id="L210">        d.buildingRoom         = p.getBuildingRoom();</span>
+<span class="fc" id="L211">        d.buildingRoomPriority = p.getBuildingRoomPriority();</span>
+<span class="fc" id="L212">        d.boardType            = p.getBoardType();</span>
+<span class="fc" id="L213">        d.boardTypePriority    = p.getBoardTypePriority();</span>
+<span class="pc bpc" id="L214" title="3 of 4 branches missed.">        d.computers            = (p.getComputers() == null || p.getComputers().isBlank())</span>
+<span class="fc" id="L215">                                  ? List.of()</span>
+<span class="pc" id="L216">                                  : Arrays.asList(p.getComputers().split(&quot;\\s*,\\s*&quot;));</span>
+<span class="fc" id="L217">        d.computersPriority    = p.getComputersPriority();</span>
+<span class="fc" id="L218">        d.format               = p.getFormat();</span>
+<span class="fc" id="L219">        d.formatPriority       = p.getFormatPriority();</span>
+<span class="fc" id="L220">        d.comments             = p.getComments();</span>
+<span class="fc" id="L221">        d.commentsPriority     = p.getCommentsPriority();</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (p.getTeacher() != null) {</span>
+<span class="fc" id="L223">            d.teacherName      = p.getTeacher().getName();</span>
+<span class="fc" id="L224">            d.teacherLogin     = p.getTeacher().getContactLogin();</span>
+        } else {
+<span class="nc" id="L226">            d.teacherName      = &quot;&quot;;</span>
+<span class="nc" id="L227">            d.teacherLogin     = &quot;&quot;;</span>
+        }
+<span class="fc" id="L229">        return d;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

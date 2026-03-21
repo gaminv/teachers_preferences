@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Collection Preferences Backend</a> &gt; <a href="index.source.html" class="el_package">com.example.webapp.dto</a> &gt; <span class="el_source">PreferenceDto.java</span></div><h1>PreferenceDto.java</h1><pre class="source lang-java linenums">package com.example.webapp.dto;
+
+import java.util.List;
+
+public class PreferenceDto {
+    public Long      id;
+    public String    type;          
+    public String    subject;
+    public String    groups;
+
+    // Теперь List вместо String
+    public List&lt;String&gt; days;
+    public Integer      daysPriority;
+    public String       times;
+    public Integer      timesPriority;
+
+    // Только для сессии
+    public String    preferredDates;
+    public String    avoidDates;
+    public String    newYearPref;
+
+    // Общие поля
+    public String         loadType;
+    public Integer        loadTypePriority;
+    public String         buildingRoom;
+    public Integer        buildingRoomPriority;
+    public String         boardType;
+    public Integer        boardTypePriority;
+    public List&lt;String&gt;   computers;
+    public Integer        computersPriority;
+    public String         format;
+    public Integer        formatPriority;
+    public String         comments;
+    public Integer        commentsPriority;
+
+    // Поля преподавателя
+    public String         teacherName;
+    public String         teacherLogin;
+
+<span class="fc" id="L40">    public PreferenceDto() {}</span>
+
+    public PreferenceDto(
+        Long id,
+        String type,
+        String subject,
+        String groups,
+        List&lt;String&gt; days,
+        Integer daysPriority,
+        String times,
+        Integer timesPriority,
+        String preferredDates,
+        String avoidDates,
+        String newYearPref,
+        String loadType,
+        Integer loadTypePriority,
+        String buildingRoom,
+        Integer buildingRoomPriority,
+        String boardType,
+        Integer boardTypePriority,
+        List&lt;String&gt; computers,
+        Integer computersPriority,
+        String format,
+        Integer formatPriority,
+        String comments,
+        Integer commentsPriority,
+        String teacherName,
+        String teacherLogin
+<span class="nc" id="L68">    ) {</span>
+<span class="nc" id="L69">        this.id                   = id;</span>
+<span class="nc" id="L70">        this.type                 = type;</span>
+<span class="nc" id="L71">        this.subject              = subject;</span>
+<span class="nc" id="L72">        this.groups               = groups;</span>
+<span class="nc" id="L73">        this.days                 = days;</span>
+<span class="nc" id="L74">        this.daysPriority         = daysPriority;</span>
+<span class="nc" id="L75">        this.times                = times;</span>
+<span class="nc" id="L76">        this.timesPriority        = timesPriority;</span>
+<span class="nc" id="L77">        this.preferredDates       = preferredDates;</span>
+<span class="nc" id="L78">        this.avoidDates           = avoidDates;</span>
+<span class="nc" id="L79">        this.newYearPref          = newYearPref;</span>
+<span class="nc" id="L80">        this.loadType             = loadType;</span>
+<span class="nc" id="L81">        this.loadTypePriority     = loadTypePriority;</span>
+<span class="nc" id="L82">        this.buildingRoom         = buildingRoom;</span>
+<span class="nc" id="L83">        this.buildingRoomPriority = buildingRoomPriority;</span>
+<span class="nc" id="L84">        this.boardType            = boardType;</span>
+<span class="nc" id="L85">        this.boardTypePriority    = boardTypePriority;</span>
+<span class="nc" id="L86">        this.computers            = computers;</span>
+<span class="nc" id="L87">        this.computersPriority    = computersPriority;</span>
+<span class="nc" id="L88">        this.format               = format;</span>
+<span class="nc" id="L89">        this.formatPriority       = formatPriority;</span>
+<span class="nc" id="L90">        this.comments             = comments;</span>
+<span class="nc" id="L91">        this.commentsPriority     = commentsPriority;</span>
+<span class="nc" id="L92">        this.teacherName          = teacherName;</span>
+<span class="nc" id="L93">        this.teacherLogin         = teacherLogin;</span>
+<span class="nc" id="L94">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
