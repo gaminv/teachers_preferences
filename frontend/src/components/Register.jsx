@@ -54,12 +54,18 @@ export default function Register() {
                 </p>
 
                 {message && (
-                    <div className="bg-green-100 text-green-700 px-4 py-2 rounded mb-4 text-center">
+                    <div
+                        data-testid="register-success"
+                        className="bg-green-100 text-green-700 px-4 py-2 rounded mb-4 text-center"
+                    >
                         {message}
                     </div>
                 )}
                 {error && (
-                    <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">
+                    <div
+                        data-testid="register-error"
+                        className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center"
+                    >
                         {error}
                     </div>
                 )}
@@ -70,6 +76,7 @@ export default function Register() {
                             ФИО
                         </label>
                         <input
+                            data-testid="register-full-name"
                             type="text"
                             required
                             placeholder="Введите ваше ФИО"
@@ -86,6 +93,7 @@ export default function Register() {
                             login
                         </label>
                         <input
+                            data-testid="register-login"
                             type="login"
                             required
                             placeholder="Введите ваш login"
@@ -102,6 +110,7 @@ export default function Register() {
                             Пароль (мин. 6 символов)
                         </label>
                         <input
+                            data-testid="register-password"
                             type="password"
                             required
                             minLength={6}
@@ -115,6 +124,7 @@ export default function Register() {
                     </div>
 
                     <button
+                        data-testid="register-submit"
                         type="submit"
                         disabled={loading}
                         className="w-full flex justify-center py-2 px-4 bg-green-600 text-white

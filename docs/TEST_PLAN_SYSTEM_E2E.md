@@ -1,28 +1,36 @@
-# System / End-to-End Test Plan (Whole Project)
+# System / End-to-End Test Plan (Teachers Preferences)
 
 ## Scope
-- Business-level checks for complete backend user flows (register/login/persist/get preferences).
-- Frontend user-level forms and interactions (registration flow and error handling).
-- Security and stability checks in realistic request chains.
+- End-user business flows for teacher and administrator roles.
+- Real browser interaction with the React frontend.
+- Full request path through frontend, backend, authentication, and persistence.
 
-## Implemented scenarios (10+)
-1. Register + login full flow.
-2. Save/read semester preferences flow.
-3. Save/read session preferences flow.
-4. Access denial without token.
-5. Invalid login rejected.
-6. Multi-record persistence.
-7. Replace semester records by re-submit.
-8. Cross-type isolation.
-9. Admin endpoint denied for non-admin.
-10. Volume smoke scenario (20 records).
-11. Frontend registration success flow.
-12. Frontend registration negative flow.
+## Environment
+- CI job: `frontend-system` in `.github/workflows/project-tests.yml`.
+- Runtime: Docker Compose (`db`, `backend`, `frontend`).
+- Browser automation: Playwright + Chromium.
 
-## Performance / volume applicability
-- Implemented **volume smoke** scenario in backend system tests.
-- Baseline timing assertion to detect severe regressions.
+## Implemented scenarios
+1. Teacher registration through the real UI.
+2. Teacher login and redirect to the dashboard.
+3. Opening semester preferences form from the dashboard.
+4. Saving semester preferences through the live UI.
+5. Viewing the saved semester preference from administrator UI.
+6. Exporting preferences to Excel from administrator UI.
+7. Saving session preferences through the live UI.
+8. Persisting session preferences after page reload.
+9. Invalid login attempt in the live UI.
+10. Backend access denial without token.
+11. Backend denial of teacher access to admin API.
+12. Replacing existing preference set on repeated submit.
+13. Semester and session data isolation.
+14. Volume smoke scenario for larger preference batches.
+
+## Key requirement status
+- Real E2E: **yes**, frontend system tests no longer use mocked API.
+- CI execution on pull request: **yes**, via Docker Compose + Playwright.
+- Negative scenarios: **yes**, invalid login and unauthorized access are included.
 
 ## CI execution
-- Backend system: `mvn -B -ntp test "-Dtest=*SystemTest,*SystemE2ETest"`
-- Frontend system: `npm run test:system`
+- Backend system suite: `mvn -B -ntp test "-Dtest=*SystemTest,*SystemE2ETest"`
+- Frontend real browser E2E: `npm run test:system`

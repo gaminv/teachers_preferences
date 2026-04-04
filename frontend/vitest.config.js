@@ -8,6 +8,12 @@ export default defineConfig({
     setupFiles: "./src/tests/setupTests.js",
     globals: true,
     css: true,
+    exclude: [
+      "e2e/**",
+      "playwright.config.js",
+      "node_modules/**",
+      "dist/**"
+    ],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "json-summary"],
