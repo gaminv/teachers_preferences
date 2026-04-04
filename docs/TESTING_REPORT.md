@@ -1,44 +1,69 @@
-# Testing Report (Frontend + Backend)
+# Testing Report (Teachers Preferences)
 
 ## Tools
-- **Backend:** Maven, JUnit 5, Mockito, Spring Boot Test, JaCoCo.
-- **Frontend:** Vitest, React Testing Library, jsdom.
-- **CI:** GitHub Actions.
+- **Backend:** Maven, JUnit 5, Mockito, Spring Boot Test, TestRestTemplate, JaCoCo.
+- **Frontend:** Vitest, React Testing Library, Playwright.
+- **Runtime / CI:** Docker Compose, GitHub Actions, CodeRabbit.
 
 ## Unit testing
-- Coverage target: 80%+ (backend JaCoCo report generated on `verify`).
-- Implemented 100+ unit tests across backend and frontend modules.
-- Techniques:
+- Backend unit tests: `78`.
+- Frontend unit tests: `60`.
+- Total unit tests in main application: `138`.
+- Automatic execution:
+  - `mvn test` for backend,
+  - `npm run test:unit` for frontend,
+  - GitHub Actions workflow `.github/workflows/project-tests.yml`.
+- Applied test-design techniques:
   - equivalence classes,
   - boundary value analysis,
   - negative testing,
-  - isolated mocking for dependencies.
+  - DTO / mapping verification,
+  - dependency isolation with mocks.
 
-## Coverage snapshot (without schedule-etl)
-- Backend (JaCoCo, `mvn clean verify`):
+## Coverage snapshot
+- Backend (`backend/target/site/jacoco/jacoco.csv`):
   - Instruction: `91.75%`
   - Line: `90.50%`
   - Branch: `64.37%`
-- Frontend (Vitest, `npm run test:coverage`):
-  - Statements/Lines: `92.57%`
+- Frontend (`frontend/coverage/coverage-summary.json`):
+  - Statements / Lines: `92.57%`
   - Branches: `79.02%`
   - Functions: `57.69%`
 
-> Note: coverage above is calculated only for `backend` + `frontend`; `schedule-etl` is excluded.
-
 ## Integration testing
-- 10+ integration scenarios implemented and documented.
-- Includes positive and negative flows.
-- CI job runs integration suites separately for backend and frontend.
+- Backend integration scenarios: `10`.
+- Frontend integration scenarios: `17`.
+- Covered flows:
+  - duplicate registration,
+  - invalid login,
+  - unauthorized access to protected endpoints,
+  - preference save / read flows,
+  - role checks,
+  - route-level composition in frontend.
+- Mocks are used only on the integration level where isolation is required.
 
-## System / E2E testing
-- 10+ system-level scenarios implemented.
-- Includes business flow validation and volume smoke checks.
-- CI job runs system suites separately for backend and frontend.
+## System / End-to-End testing
+- Backend system HTTP scenarios: `10`.
+- Frontend browser E2E scenarios: `4`.
+- Frontend system tests now run through **Playwright** against a live stack and do **not** mock backend API calls.
+- CI job `frontend-system`:
+  - installs Playwright,
+  - starts `db`, `backend`, and `frontend` through Docker Compose,
+  - waits for application readiness,
+  - runs `npm run test:system`,
+  - uploads Playwright artifacts.
+
+## CodeRabbit / PR pipeline
+- Added `.coderabbit.yaml` to prevent long pending states on PRs.
+- Key changes:
+  - auto-review enabled for any base branch,
+  - GitHub checks waiting inside CodeRabbit disabled,
+  - generated artifacts excluded from CodeRabbit review scope,
+  - review status remains visible in pull requests.
 
 ## Test suite extension procedure
-1. Add unit tests near changed module (`backend/src/test/...` or `frontend/src/tests/unit`).
-2. Add/update integration scenario to cover module interaction.
-3. Add/update at least one system scenario for end-user flow.
-4. Include negative case for each new rule/endpoint/component flow.
-5. Validate in CI and keep docs updated (`docs/TEST_PLAN_*.md`).
+1. Add unit tests in `backend/src/test/...` or `frontend/src/tests/unit`.
+2. Add or update an integration scenario for module interaction.
+3. Add or update at least one Playwright or backend system scenario for the end-user flow.
+4. Include a negative case for every new business rule or protected endpoint.
+5. Run the corresponding CI jobs and update `docs/TEST_PLAN_*.md` and `.docx` reports.

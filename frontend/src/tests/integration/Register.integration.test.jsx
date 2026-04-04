@@ -9,16 +9,16 @@ vi.mock("../../api", () => ({
 
 import { register as registerApi } from "../../api";
 
-describe("Register system-like flows", () => {
+describe("Register integration flows", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   const fillAndSubmit = (fullName, login, password) => {
-    fireEvent.change(screen.getByPlaceholderText("Введите ваше ФИО"), { target: { value: fullName } });
-    fireEvent.change(screen.getByPlaceholderText("Введите ваш login"), { target: { value: login } });
-    fireEvent.change(screen.getByPlaceholderText("••••••••"), { target: { value: password } });
-    fireEvent.click(screen.getByRole("button", { name: "Зарегистрироваться" }));
+    fireEvent.change(screen.getByTestId("register-full-name"), { target: { value: fullName } });
+    fireEvent.change(screen.getByTestId("register-login"), { target: { value: login } });
+    fireEvent.change(screen.getByTestId("register-password"), { target: { value: password } });
+    fireEvent.click(screen.getByTestId("register-submit"));
   };
 
   test.each([
@@ -35,7 +35,7 @@ describe("Register system-like flows", () => {
       </MemoryRouter>
     );
     fillAndSubmit(fullName, login, password);
-    await waitFor(() => expect(screen.getByText("Успешно зарегистрированы!")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId("register-success")).toBeInTheDocument());
   });
 
   test.each([
@@ -52,6 +52,6 @@ describe("Register system-like flows", () => {
       </MemoryRouter>
     );
     fillAndSubmit("Иван", "ivan", "123456");
-    await waitFor(() => expect(screen.getByText(message)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId("register-error")).toHaveTextContent(message));
   });
 });

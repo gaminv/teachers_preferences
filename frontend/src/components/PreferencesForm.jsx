@@ -193,8 +193,16 @@ export default function PreferencesForm() {
                     </button>
                 </div>
 
-                {error && <div className="mb-4 text-center text-red-600">{error}</div>}
-                {success && <div className="mb-4 text-center text-green-700">{success}</div>}
+                {error && (
+                    <div data-testid="preferences-error" className="mb-4 text-center text-red-600">
+                        {error}
+                    </div>
+                )}
+                {success && (
+                    <div data-testid="preferences-success" className="mb-4 text-center text-green-700">
+                        {success}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {entries.map((e, idx) => (
@@ -230,6 +238,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Название предмета</label>
                                     <input
+                                        data-testid={`preference-${idx}-subject`}
                                         type="text"
                                         className="w-full border px-2 py-1 rounded"
                                         value={e.subject}
@@ -239,6 +248,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Группы (через запятую)</label>
                                     <input
+                                        data-testid={`preference-${idx}-groups`}
                                         type="text"
                                         className="w-full border px-2 py-1 rounded"
                                         value={e.groups}
@@ -577,15 +587,17 @@ export default function PreferencesForm() {
 
                     {/* Кнопки */}
                     <div className="flex justify-between items-center">
-                        <button
-                            type="button"
-                            onClick={addEntry}
+                            <button
+                                data-testid="preferences-add-entry"
+                                type="button"
+                                onClick={addEntry}
                             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
                         >
                             Добавить ещё
                         </button>
                         <div>
                             <button
+                                data-testid="preferences-save"
                                 type="submit"
                                 disabled={loading}
                                 className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

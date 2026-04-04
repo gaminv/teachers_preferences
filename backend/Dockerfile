@@ -3,7 +3,7 @@ FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 COPY pom.xml ./
 COPY src ./src
-RUN mvn clean verify
+RUN mvn -B -ntp -DskipTests package
 
 # Stage 2: Run on minimal JDK 17 (Alpine)
 FROM eclipse-temurin:17-jdk-alpine

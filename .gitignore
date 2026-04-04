@@ -1,0 +1,7 @@
+backend/target/
+frontend/node_modules/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
+schedule-etl/target/
+*.log

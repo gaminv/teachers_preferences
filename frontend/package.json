@@ -9,9 +9,10 @@
         "test": "vitest run",
         "test:unit": "vitest run src/tests/unit",
         "test:integration": "vitest run src/tests/integration",
-        "test:system": "vitest run src/tests/system",
+        "test:system": "playwright test",
+        "test:system:ui": "playwright test --ui",
         "test:coverage": "vitest run --coverage"
-    },  
+    },
     "dependencies": {
         "axios": "^1.9.0",
         "react": "^18.2.0",
@@ -21,6 +22,7 @@
         "xlsx": "^0.18.5"
     },
     "devDependencies": {
+        "@playwright/test": "^1.59.1",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.1.0",
         "@testing-library/user-event": "^14.5.2",

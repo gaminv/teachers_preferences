@@ -1,0 +1,27 @@
+language: ru-RU
+
+reviews:
+  profile: chill
+  review_status: true
+  commit_status: true
+  fail_commit_status: true
+  in_progress_fortune: false
+  poem: false
+  path_filters:
+    - "!backend/target/**"
+    - "!frontend/coverage/**"
+    - "!frontend/node_modules/**"
+    - "!frontend/playwright-report/**"
+    - "!frontend/test-results/**"
+    - "!schedule-etl/target/**"
+    - "!**/*.zip"
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    drafts: false
+    base_branches:
+      - ".*"
+  tools:
+    github-checks:
+      enabled: false

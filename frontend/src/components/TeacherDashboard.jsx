@@ -57,7 +57,11 @@ export default function TeacherDashboard() {
                     <h1 className="text-3xl font-bold text-gray-800">
                         Здравствуйте, {user.fullName}!
                     </h1>
-                    <button onClick={handleLogout} className="text-red-600 hover:underline">
+                    <button
+                        data-testid="teacher-logout"
+                        onClick={handleLogout}
+                        className="text-red-600 hover:underline"
+                    >
                         Выйти
                     </button>
                 </header>
@@ -65,6 +69,7 @@ export default function TeacherDashboard() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {/* Семестр */}
                     <Link
+                        data-testid="teacher-semester-link"
                         to={semExpired ? '#' : '/teacher/semester'}
                         onClick={e => {
                             if (semExpired) {
@@ -87,6 +92,7 @@ export default function TeacherDashboard() {
 
                     {/* Сессия */}
                     <Link
+                        data-testid="teacher-session-link"
                         to={sesExpired ? '#' : '/teacher/session'}
                         onClick={e => {
                             if (sesExpired) {

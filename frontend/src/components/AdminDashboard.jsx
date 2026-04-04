@@ -115,6 +115,7 @@ export default function AdminDashboard() {
                     <h1 className="text-2xl font-bold">Панель администратора</h1>
                     <div className="space-x-4">
                         <button
+                            data-testid="admin-logout"
                             onClick={handleLogout}
                             className="text-red-600 hover:underline"
                         >
@@ -184,6 +185,7 @@ export default function AdminDashboard() {
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-semibold">Пожелания преподавателей</h2>
                         <button
+                            data-testid="admin-export-button"
                             onClick={downloadExcel}
                             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
                         >
@@ -191,7 +193,7 @@ export default function AdminDashboard() {
                         </button>
                     </div>
                     <h3 className="font-medium mb-2">Семестр</h3>
-                    <ul className="list-disc list-inside text-sm mb-6">
+                    <ul data-testid="admin-semester-list" className="list-disc list-inside text-sm mb-6">
                         {prefsSemester.map((p, i) => (
                             <li key={i}>
                                 <strong>{p.teacherName}</strong> — {p.subject} — группы: {p.groups}
@@ -199,7 +201,7 @@ export default function AdminDashboard() {
                         ))}
                     </ul>
                     <h3 className="font-medium mb-2">Сессия</h3>
-                    <ul className="list-disc list-inside text-sm">
+                    <ul data-testid="admin-session-list" className="list-disc list-inside text-sm">
                         {prefsSession.map((p, i) => (
                             <li key={i}>
                                 <strong>{p.teacherName}</strong> — {p.subject} — группы: {p.groups}
