@@ -45,6 +45,8 @@ test.describe("Teachers Preferences real system tests", () => {
     await page.getByTestId("preferences-save").click();
     await expect(page.getByTestId("preferences-success")).toBeVisible();
 
+    await page.goto("/teacher");
+    await expect(page.getByTestId("teacher-logout")).toBeVisible();
     await page.getByTestId("teacher-logout").click();
     await login(page, "admin", "admin1");
 
