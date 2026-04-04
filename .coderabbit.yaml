@@ -5,6 +5,9 @@ reviews:
   review_status: true
   commit_status: true
   fail_commit_status: true
+  pre_merge_checks:
+    docstrings:
+      mode: off
   in_progress_fortune: false
   poem: false
   path_filters:
