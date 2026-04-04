@@ -4,4 +4,5 @@ frontend/coverage/
 frontend/playwright-report/
 frontend/test-results/
 schedule-etl/target/
+schedule-etl.zip
 *.log
