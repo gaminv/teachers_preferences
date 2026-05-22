@@ -212,6 +212,7 @@ export default function PreferencesForm() {
                                 <div>
                                     {idx > 0 && (
                                         <button
+                                            data-testid={`preference-${idx}-copy-prev`}
                                             type="button"
                                             onClick={() => copyPrev(idx)}
                                             className="text-blue-600 hover:underline mr-4"
@@ -223,6 +224,7 @@ export default function PreferencesForm() {
                                 <div>
                                     {entries.length > 1 && (
                                         <button
+                                            data-testid={`preference-${idx}-remove`}
                                             type="button"
                                             onClick={() => removeEntry(idx)}
                                             className="text-red-600 hover:underline"
@@ -264,9 +266,10 @@ export default function PreferencesForm() {
                                     <div className="col-span-2">
                                         <label className="block font-medium">Нежелательные дни</label>
                                         <div className="flex flex-wrap gap-4 mt-1">
-                                            {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
+                                            {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day, dayIdx) => (
                                                 <label key={day} className="inline-flex items-center mr-4">
                                                     <input
+                                                        data-testid={`preference-${idx}-day-${dayIdx}`}
                                                         type="checkbox"
                                                         className="mr-1"
                                                         checked={e.days.includes(day)}
@@ -280,6 +283,7 @@ export default function PreferencesForm() {
                                     <div>
                                         <label className="block font-medium">Приоритет</label>
                                         <select
+                                            data-testid={`preference-${idx}-days-priority`}
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.daysPriority}
                                             onChange={v => updateField(idx, 'daysPriority', v.target.value)}
@@ -294,6 +298,7 @@ export default function PreferencesForm() {
                                     <div className="col-span-2">
                                         <label className="block font-medium">Нежелательное время</label>
                                         <input
+                                            data-testid={`preference-${idx}-times`}
                                             type="text"
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.times}
@@ -303,6 +308,7 @@ export default function PreferencesForm() {
                                     <div>
                                         <label className="block font-medium">Приоритет</label>
                                         <select
+                                            data-testid={`preference-${idx}-times-priority`}
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.timesPriority}
                                             onChange={v => updateField(idx, 'timesPriority', v.target.value)}
@@ -320,6 +326,7 @@ export default function PreferencesForm() {
                                     <div className="col-span-2">
                                         <label className="block font-medium">Предпочтительные даты</label>
                                         <input
+                                            data-testid={`preference-${idx}-preferred-dates`}
                                             type="text"
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.preferredDates}
@@ -329,6 +336,7 @@ export default function PreferencesForm() {
                                     <div>
                                         <label className="block font-medium">Приоритет</label>
                                         <select
+                                            data-testid={`preference-${idx}-preferred-dates-priority`}
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.preferredDatesPriority}
                                             onChange={v => updateField(idx, 'preferredDatesPriority', v.target.value)}
@@ -343,6 +351,7 @@ export default function PreferencesForm() {
                                     <div className="col-span-2">
                                         <label className="block font-medium">Даты, в которые НЕ ставить</label>
                                         <input
+                                            data-testid={`preference-${idx}-avoid-dates`}
                                             type="text"
                                             className="w-full border px-2 py-1 rounded"
                                             value={e.avoidDates}
@@ -352,6 +361,7 @@ export default function PreferencesForm() {
                                     <div>
                                         <label className="block font-medium">Приоритет</label>
                                         <select
+                                            data-testid={`preference-${idx}-avoid-dates-priority`}
                                             className="w-full border px-2 py-1.rounded"
                                             value={e.avoidDatesPriority}
                                             onChange={v => updateField(idx, 'avoidDatesPriority', v.target.value)}
@@ -366,6 +376,7 @@ export default function PreferencesForm() {
                                     <div className="col-span-2">
                                         <label className="block font-medium">Пожелания до/после Нового года</label>
                                         <input
+                                            data-testid={`preference-${idx}-new-year-pref`}
                                             type="text"
                                             className="w-full border px-2 py-1.rounded"
                                             value={e.newYearPref}
@@ -375,6 +386,7 @@ export default function PreferencesForm() {
                                     <div>
                                         <label className="block font-medium">Приоритет</label>
                                         <select
+                                            data-testid={`preference-${idx}-new-year-pref-priority`}
                                             className="w-full border px-2 py-1.rounded"
                                             value={e.newYearPrefPriority}
                                             onChange={v => updateField(idx, 'newYearPrefPriority', v.target.value)}
@@ -394,6 +406,7 @@ export default function PreferencesForm() {
                                 <div className="col-span-2 relative">
                                     <label className="block font-medium">Корпус/аудитория</label>
                                     <input
+                                        data-testid={`preference-${idx}-building-room`}
                                         type="text"
                                         className="w-full border px-2 py-1 rounded"
                                         value={e.buildingRoom}
@@ -413,8 +426,9 @@ export default function PreferencesForm() {
                                                 .filter(r =>
                                                     r.toLowerCase().includes(e.buildingRoom.toLowerCase())
                                                 )
-                                                .map(r => (
+                                                .map((r, roomIdx) => (
                                                     <li
+                                                        data-testid={`preference-${idx}-room-option-${roomIdx}`}
                                                         key={r}
                                                         className="px-2 py-1 hover:bg-gray-200 cursor-pointer"
                                                         onMouseDown={() => {
@@ -434,6 +448,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-building-room-priority`}
                                         className="w-full border px-2 py-1 rounded"
                                         value={e.buildingRoomPriority}
                                         onChange={v => updateField(idx, 'buildingRoomPriority', v.target.value)}
@@ -454,6 +469,7 @@ export default function PreferencesForm() {
                                         {['Windows', 'Linux'].map(os => (
                                             <label key={os} className="inline-flex items-center">
                                                 <input
+                                                    data-testid={`preference-${idx}-computer-${os.toLowerCase()}`}
                                                     type="checkbox"
                                                     className="mr-1"
                                                     checked={e.computers.includes(os)}
@@ -467,6 +483,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-computers-priority`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.computersPriority}
                                         onChange={v => updateField(idx, 'computersPriority', v.target.value)}
@@ -482,6 +499,7 @@ export default function PreferencesForm() {
                                 <div className="col-span-2">
                                     <label className="block font-medium">Тип нагрузки</label>
                                     <select
+                                        data-testid={`preference-${idx}-load-type`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.loadType}
                                         onChange={v => updateField(idx, 'loadType', v.target.value)}
@@ -494,6 +512,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-load-type-priority`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.loadTypePriority}
                                         onChange={v => updateField(idx, 'loadTypePriority', v.target.value)}
@@ -509,6 +528,7 @@ export default function PreferencesForm() {
                                 <div className="col-span-2">
                                     <label className="block font-medium">Тип доски</label>
                                     <select
+                                        data-testid={`preference-${idx}-board-type`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.boardType}
                                         onChange={v => updateField(idx, 'boardType', v.target.value)}
@@ -522,6 +542,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-board-type-priority`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.boardTypePriority}
                                         onChange={v => updateField(idx, 'boardTypePriority', v.target.value)}
@@ -537,6 +558,7 @@ export default function PreferencesForm() {
                                 <div className="col-span-2">
                                     <label className="block font-medium">Формат занятий</label>
                                     <select
+                                        data-testid={`preference-${idx}-format`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.format}
                                         onChange={v => updateField(idx, 'format', v.target.value)}
@@ -549,6 +571,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-format-priority`}
                                         className="w-full border px-2 py-1.rounded"
                                         value={e.formatPriority}
                                         onChange={v => updateField(idx, 'formatPriority', v.target.value)}
@@ -564,6 +587,7 @@ export default function PreferencesForm() {
                                 <div className="col-span-2">
                                     <label className="block font-medium">Комментарии</label>
                                     <textarea
+                                        data-testid={`preference-${idx}-comments`}
                                         className="w-full border px-2 py-1.rounded"
                                         rows={3}
                                         value={e.comments}
@@ -573,6 +597,7 @@ export default function PreferencesForm() {
                                 <div>
                                     <label className="block font-medium">Приоритет</label>
                                     <select
+                                        data-testid={`preference-${idx}-comments-priority`}
                                         className="w-full border px-2 py-1 rounded"
                                         value={e.commentsPriority}
                                         onChange={v => updateField(idx, 'commentsPriority', v.target.value)}
