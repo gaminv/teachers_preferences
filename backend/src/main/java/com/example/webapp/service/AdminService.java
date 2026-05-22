@@ -156,6 +156,7 @@ public class AdminService {
     }
 
     private String translateType(String type) {
+        if (type == null) return "";
         switch (type) {
             case "semester": return "Семестр";
             case "session":  return "Сессия";
@@ -164,6 +165,7 @@ public class AdminService {
     }
 
     private String translateLoadType(String lt) {
+        if (lt == null) return "";
         switch (lt) {
             case "compact": return "Компактно";
             case "even":    return "Равномерно";
@@ -172,6 +174,7 @@ public class AdminService {
     }
 
     private String translateBoardType(String bt) {
+        if (bt == null) return "";
         switch (bt) {
             case "marker":  return "Маркер";
             case "chalk":   return "Мел";
@@ -181,6 +184,7 @@ public class AdminService {
     }
 
     private String translateFormat(String f) {
+        if (f == null) return "";
         switch (f) {
             case "in-person": return "Очно";
             case "remote":    return "Дистанционно";
