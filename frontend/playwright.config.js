@@ -7,6 +7,7 @@ module.exports = defineConfig({
     timeout: 10_000
   },
   fullyParallel: false,
+  workers: 1,
   retries: process.env.CI ? 2 : 0,
   reporter: [
     ["list"],
@@ -16,7 +17,7 @@ module.exports = defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1",
     headless: true,
     screenshot: "only-on-failure",
-    trace: "on-first-retry",
-    video: "retain-on-failure"
+    trace: process.env.CI ? "on" : "on-first-retry",
+    video: process.env.CI ? "on" : "retain-on-failure"
   }
 });

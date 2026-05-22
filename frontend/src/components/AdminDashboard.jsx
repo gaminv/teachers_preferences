@@ -135,6 +135,7 @@ export default function AdminDashboard() {
                                 Текст кнопки «{config.semesterButtonText}»
                             </label>
                             <input
+                                data-testid="admin-semester-button-text"
                                 type="text"
                                 className="w-full border px-3 py-2 rounded"
                                 value={config.semesterButtonText}
@@ -144,6 +145,7 @@ export default function AdminDashboard() {
                         <div>
                             <label className="block text-gray-700 mb-1">Дедлайн:</label>
                             <input
+                                data-testid="admin-semester-deadline"
                                 type="date"
                                 className="w-full border px-3 py-2 rounded"
                                 value={config.semesterDeadline}
@@ -155,6 +157,7 @@ export default function AdminDashboard() {
                                 Текст кнопки «{config.sessionButtonText}»
                             </label>
                             <input
+                                data-testid="admin-session-button-text"
                                 type="text"
                                 className="w-full border px-3 py-2 rounded"
                                 value={config.sessionButtonText}
@@ -164,6 +167,7 @@ export default function AdminDashboard() {
                         <div>
                             <label className="block text-gray-700 mb-1">Дедлайн:</label>
                             <input
+                                data-testid="admin-session-deadline"
                                 type="date"
                                 className="w-full border px-3 py-2 rounded"
                                 value={config.sessionDeadline}
@@ -172,6 +176,7 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                     <button
+                        data-testid="admin-config-save"
                         onClick={handleConfigSave}
                         className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                     >
@@ -212,10 +217,11 @@ export default function AdminDashboard() {
                 {/* Форма регистрации нового преподавателя */}
                 <div className="bg-white p-6 rounded-lg shadow mb-8">
                     <h2 className="text-xl font-semibold mb-4">Регистрация нового пользователя</h2>
-                    {regError && <div className="text-red-600 mb-2">{regError}</div>}
-                    {regSuccess && <div className="text-green-700 mb-2">{regSuccess}</div>}
+                    {regError && <div data-testid="admin-register-error" className="text-red-600 mb-2">{regError}</div>}
+                    {regSuccess && <div data-testid="admin-register-success" className="text-green-700 mb-2">{regSuccess}</div>}
                     <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <input
+                            data-testid="admin-register-full-name"
                             type="text"
                             placeholder="ФИО"
                             value={newFullName}
@@ -224,6 +230,7 @@ export default function AdminDashboard() {
                             required
                         />
                         <input
+                            data-testid="admin-register-login"
                             type="text"
                             placeholder="Логин"
                             value={newLogin}
@@ -232,6 +239,7 @@ export default function AdminDashboard() {
                             required
                         />
                         <input
+                            data-testid="admin-register-password"
                             type="password"
                             placeholder="Пароль"
                             value={newPassword}
@@ -242,6 +250,7 @@ export default function AdminDashboard() {
                         />
                         <div className="md:col-span-3 flex justify-end">
                             <button
+                                data-testid="admin-register-submit"
                                 type="submit"
                                 disabled={regLoading}
                                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
